@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111f">
+  <title>JARVIS — Personal AI Assistant</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><div class="brand-mark">J</div><div><b>JARVIS</b><small>PERSONAL ASSISTANT</small></div></div>
+      <button class="new-chat" id="newChat">＋ New conversation</button>
+      <div class="nav-label">WORKSPACE</div>
+      <button class="nav-item active" data-page="assistant">◉ <span>AI Assistant</span></button>
+      <button class="nav-item" data-page="tasks">✓ <span>My Tasks</span><em id="taskBadge">0</em></button>
+      <button class="nav-item" data-page="notes">▤ <span>Notes</span></button>
+      <button class="nav-item" data-page="phone">▣ <span>Phone Center</span></button>
+      <button class="nav-item" data-page="settings">⚙ <span>Settings</span></button>
+      <div class="sidebar-bottom"><div class="status-dot"></div><span>Local workspace active</span></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-menu" id="menuBtn" aria-label="Open menu">☰</button>
+        <div><div class="eyebrow">PERSONAL INTELLIGENCE SYSTEM</div><h1 id="pageTitle">AI Assistant</h1></div>
+        <div class="top-actions"><span class="online-pill"><i></i> SYSTEM ONLINE</span><button class="icon-btn" id="themeBtn" title="Toggle theme">☼</button></div>
+      </header>
+
+      <section class="page active" id="assistantPage">
+        <div class="welcome-panel">
+          <div class="welcome-copy"><div class="eyebrow cyan">YOUR PERSONAL ASSISTANT</div><h2>Good day.<br><span>How can I help you?</span></h2><p>Ask a question, organise your day, or use a voice command.</p></div>
+          <div class="orb-wrap"><div class="orb"><div class="orb-core"></div></div><div class="orb-caption">JARVIS CORE <span>READY</span></div></div>
+        </div>
+        <div class="quick-grid">
+          <button class="quick-card" data-prompt="Help me plan my day"><span>◷</span><b>Plan my day</b><small>Organise today's priorities</small></button>
+          <button class="quick-card" data-prompt="Give me a simple study plan"><span>▤</span><b>Study planner</b><small>Build a focused study routine</small></button>
+          <button class="quick-card" data-prompt="Explain artificial intelligence simply"><span>✧</span><b>Learn something</b><small>Understand a new topic</small></button>
+          <button class="quick-card" data-prompt="Give me ideas for a useful website"><span>⌘</span><b>Creative ideas</b><small>Explore your next project</small></button>
+        </div>
+        <div class="chat-panel">
+          <div class="panel-heading"><div><h3>Conversation</h3><p>Chat with your personal assistant</p></div><button class="text-btn" id="clearChat">Clear chat</button></div>
+          <div class="chat-messages" id="chatMessages">
+            <div class="message assistant"><div class="avatar">J</div><div class="bubble"><b>JARVIS</b><p>Systems ready. I can help with questions, writing, planning, reminders and more. What would you like to do?</p><small>Just now</small></div></div>
+          </div>
+          <div class="composer"><textarea id="chatInput" rows="1" placeholder="Message JARVIS..."></textarea><button class="voice-btn" id="voiceBtn" title="Voice input">🎙</button><button class="send-btn" id="sendBtn" title="Send message">➤</button></div>
+          <div class="composer-hint">Enter to send · Shift + Enter for a new line · Voice input depends on browser support</div>
+        </div>
+      </section>
+
+      <section class="page" id="tasksPage">
+        <div class="section-intro"><div><div class="eyebrow cyan">STAY ON TRACK</div><h2>My Tasks</h2><p>Keep your day organised. Tasks are saved on this device.</p></div></div>
+        <div class="add-row"><input id="taskInput" placeholder="Add a task, e.g. Finish my homework"><button class="primary-btn" id="addTask">＋ Add task</button></div>
+        <div class="task-list" id="taskList"></div>
+      </section>
+
+      <section class="page" id="notesPage">
+        <div class="section-intro"><div><div class="eyebrow cyan">YOUR THOUGHTS</div><h2>Notes</h2><p>Quick notes are stored locally in this browser.</p></div></div>
+        <div class="note-editor"><input id="noteTitle" placeholder="Note title"><textarea id="noteBody" rows="5" placeholder="Write your note here..."></textarea><button class="primary-btn" id="saveNote">Save note</button></div>
+        <div class="notes-grid" id="notesGrid"></div>
+      </section>
+
+      <section class="page" id="phonePage">
+        <div class="section-intro"><div><div class="eyebrow cyan">ANDROID COMPANION</div><h2>Phone Center</h2><p>Website-only controls are limited by Android and browser security.</p></div><span class="safe-label">PERMISSION BASED</span></div>
+        <div class="notice"><b>Important:</b> This website cannot silently control your phone, read all notifications, or change protected system settings. Those features need a separate Android companion app and your explicit permission.</div>
+        <div class="phone-grid">
+          <div class="feature-card"><span>▣</span><h3>Open apps</h3><p>Open supported apps or their web versions.</p><div class="app-links"><button data-url="https://www.youtube.com">YouTube ↗</button><button data-url="https://mail.google.com">Gmail ↗</button><button data-url="https://www.google.com/maps">Maps ↗</button></div></div>
+          <div class="feature-card"><span>🔋</span><h3>Battery status</h3><p id="batteryStatus">Battery information is not available in this browser.</p><button class="outline-btn" id="batteryBtn">Check battery</button></div>
+          <div class="feature-card"><span>🔦</span><h3>Flashlight</h3><p>Direct flashlight control is not supported by ordinary websites.</p><button class="outline-btn" id="flashInfo">How to control it</button></div>
+          <div class="feature-card"><span>🔔</span><h3>Notifications</h3><p>Web notifications require permission and only show notifications created by this site.</p><button class="outline-btn" id="notifyBtn">Enable web notifications</button></div>
+          <div class="feature-card"><span>⏰</span><h3>Reminder</h3><p>Create a reminder in your task list.</p><button class="outline-btn" id="reminderBtn">Add a reminder</button></div>
+          <div class="feature-card"><span>⚙</span><h3>Android companion</h3><p>A future Android app can provide approved device integrations.</p><span class="coming-soon">COMPANION APP REQUIRED</span></div>
+        </div>
+      </section>
+
+      <section class="page" id="settingsPage">
+        <div class="section-intro"><div><div class="eyebrow cyan">PREFERENCES</div><h2>Settings</h2><p>Personalise your JARVIS workspace.</p></div></div>
+        <div class="settings-card"><label for="userName">Your name</label><input id="userName" placeholder="Enter your name"><label for="language">Assistant language</label><select id="language"><option value="en">English</option><option value="bn">বাংলা (Bengali)</option><option value="both">বাংলা + English</option></select><button class="primary-btn" id="saveSettings">Save settings</button></div>
+        <div class="settings-card"><h3>Privacy & storage</h3><p>Your tasks, notes and preferences are saved in this browser's local storage. They are not automatically uploaded to a server.</p><button class="danger-btn" id="eraseData">Delete local data</button></div>
+      </section>
+
+      <footer>JARVIS PERSONAL ASSISTANT <span>•</span> Prototype v1.0 <span>•</span> Your data stays in this browser</footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
