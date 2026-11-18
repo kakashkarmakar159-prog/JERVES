@@ -1,89 +1,76 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#07111f">
-  <title>JARVIS — Personal AI Assistant</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#06121d"><title>JARVIS V2 — Personal Command System</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-      <div class="brand"><div class="brand-mark">J</div><div><b>JARVIS</b><small>PERSONAL ASSISTANT</small></div></div>
-      <button class="new-chat" id="newChat">＋ New conversation</button>
-      <div class="nav-label">WORKSPACE</div>
-      <button class="nav-item active" data-page="assistant">◉ <span>AI Assistant</span></button>
-      <button class="nav-item" data-page="tasks">✓ <span>My Tasks</span><em id="taskBadge">0</em></button>
-      <button class="nav-item" data-page="notes">▤ <span>Notes</span></button>
-      <button class="nav-item" data-page="phone">▣ <span>Phone Center</span></button>
-      <button class="nav-item" data-page="settings">⚙ <span>Settings</span></button>
-      <div class="sidebar-bottom"><div class="status-dot"></div><span>Local workspace active</span></div>
-    </aside>
-
-    <main class="main">
-      <header class="topbar">
-        <button class="mobile-menu" id="menuBtn" aria-label="Open menu">☰</button>
-        <div><div class="eyebrow">PERSONAL INTELLIGENCE SYSTEM</div><h1 id="pageTitle">AI Assistant</h1></div>
-        <div class="top-actions"><span class="online-pill"><i></i> SYSTEM ONLINE</span><button class="icon-btn" id="themeBtn" title="Toggle theme">☼</button></div>
-      </header>
-
-      <section class="page active" id="assistantPage">
-        <div class="welcome-panel">
-          <div class="welcome-copy"><div class="eyebrow cyan">YOUR PERSONAL ASSISTANT</div><h2>Good day.<br><span>How can I help you?</span></h2><p>Ask a question, organise your day, or use a voice command.</p></div>
-          <div class="orb-wrap"><div class="orb"><div class="orb-core"></div></div><div class="orb-caption">JARVIS CORE <span>READY</span></div></div>
-        </div>
-        <div class="quick-grid">
-          <button class="quick-card" data-prompt="Help me plan my day"><span>◷</span><b>Plan my day</b><small>Organise today's priorities</small></button>
-          <button class="quick-card" data-prompt="Give me a simple study plan"><span>▤</span><b>Study planner</b><small>Build a focused study routine</small></button>
-          <button class="quick-card" data-prompt="Explain artificial intelligence simply"><span>✧</span><b>Learn something</b><small>Understand a new topic</small></button>
-          <button class="quick-card" data-prompt="Give me ideas for a useful website"><span>⌘</span><b>Creative ideas</b><small>Explore your next project</small></button>
-        </div>
-        <div class="chat-panel">
-          <div class="panel-heading"><div><h3>Conversation</h3><p>Chat with your personal assistant</p></div><button class="text-btn" id="clearChat">Clear chat</button></div>
-          <div class="chat-messages" id="chatMessages">
-            <div class="message assistant"><div class="avatar">J</div><div class="bubble"><b>JARVIS</b><p>Systems ready. I can help with questions, writing, planning, reminders and more. What would you like to do?</p><small>Just now</small></div></div>
-          </div>
-          <div class="composer"><textarea id="chatInput" rows="1" placeholder="Message JARVIS..."></textarea><button class="voice-btn" id="voiceBtn" title="Voice input">🎙</button><button class="send-btn" id="sendBtn" title="Send message">➤</button></div>
-          <div class="composer-hint">Enter to send · Shift + Enter for a new line · Voice input depends on browser support</div>
+<div id="app" class="app">
+  <header class="topbar">
+    <button class="brand" id="homeBtn"><span class="brand-logo">J</span><span><b>JARVIS</b><small>PERSONAL COMMAND SYSTEM</small></span></button>
+    <div class="top-status"><span class="pulse"></span><span id="systemStatus">SYSTEM ONLINE</span><span class="clock" id="clock">--:--:--</span></div>
+    <div class="top-buttons"><button id="lockBtn" class="tiny-btn" title="Lock (L)">LOCK</button><button id="settingsBtn" class="tiny-btn" title="Settings (ST)">⚙ SETTINGS</button></div>
+  </header>
+  <div class="layout">
+    <main class="workspace">
+      <section class="interface active" id="view-command">
+        <div class="view-head"><div><label>INTERFACE 01 / COMMAND CENTER</label><h1>COMMAND <em>CENTER</em></h1></div><div class="live-chip">● LIVE SYSTEM</div></div>
+        <div class="command-grid">
+          <div class="panel map-panel"><div class="panel-title">LIVE GEO POSITION <span id="locStatus">WAITING FOR PERMISSION</span></div><div id="commandMap" class="map"></div><div class="map-foot"><span id="coords">COORDINATES: NOT AVAILABLE</span><button id="locateBtn">LOCATE ME</button></div><div class="radar-sweep"></div></div>
+          <div class="panel terminal-panel"><div class="panel-title">NEXUS_CHAT://OPERATOR <span>ENCRYPTED UI</span></div><div class="terminal-log" id="terminalLog"><div>[JARVIS] Command interface initialised.</div><div>[SYSTEM] Awaiting operator input...</div></div><div class="terminal-stats"><span>CPU <b id="cpuStat">--</b></span><span>MEM <b>LOCAL</b></span><span>BATTERY <b id="batteryStat">--</b></span></div></div>
+          <div class="panel data-panel"><div class="panel-title">SYSTEM DIAGNOSTICS <span>LIVE</span></div><div class="diagnostic-lines" id="diagLines">NETWORK STATUS: BROWSER CONNECTED<br>LOCATION MODULE: STANDBY<br>AI CORE: LOCAL DEMO MODE<br>SECURITY: UI LOCK AVAILABLE</div><div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
         </div>
       </section>
-
-      <section class="page" id="tasksPage">
-        <div class="section-intro"><div><div class="eyebrow cyan">STAY ON TRACK</div><h2>My Tasks</h2><p>Keep your day organised. Tasks are saved on this device.</p></div></div>
-        <div class="add-row"><input id="taskInput" placeholder="Add a task, e.g. Finish my homework"><button class="primary-btn" id="addTask">＋ Add task</button></div>
-        <div class="task-list" id="taskList"></div>
+      <section class="interface" id="view-radar">
+        <div class="view-head"><div><label>INTERFACE 02 / GEOLOCATION RADAR</label><h1>GEO <em>RADAR</em></h1></div><div class="live-chip">● MAP LINK READY</div></div>
+        <div class="panel radar-panel"><div class="panel-title">AREA MAP / SELECT A LOCATION <span>OPENSTREETMAP</span></div><div class="map-tools"><input id="mapSearch" placeholder="Search a place, e.g. Kolkata"><button id="mapSearchBtn">SEARCH</button><button id="mapMyLocation">MY LOCATION</button></div><div id="radarMap" class="map big-map"></div><div class="map-foot"><span id="radarCoords">MAP CENTER: KOLKATA DEFAULT</span><span>ZOOM / PAN ENABLED</span></div></div>
       </section>
-
-      <section class="page" id="notesPage">
-        <div class="section-intro"><div><div class="eyebrow cyan">YOUR THOUGHTS</div><h2>Notes</h2><p>Quick notes are stored locally in this browser.</p></div></div>
-        <div class="note-editor"><input id="noteTitle" placeholder="Note title"><textarea id="noteBody" rows="5" placeholder="Write your note here..."></textarea><button class="primary-btn" id="saveNote">Save note</button></div>
-        <div class="notes-grid" id="notesGrid"></div>
-      </section>
-
-      <section class="page" id="phonePage">
-        <div class="section-intro"><div><div class="eyebrow cyan">ANDROID COMPANION</div><h2>Phone Center</h2><p>Website-only controls are limited by Android and browser security.</p></div><span class="safe-label">PERMISSION BASED</span></div>
-        <div class="notice"><b>Important:</b> This website cannot silently control your phone, read all notifications, or change protected system settings. Those features need a separate Android companion app and your explicit permission.</div>
-        <div class="phone-grid">
-          <div class="feature-card"><span>▣</span><h3>Open apps</h3><p>Open supported apps or their web versions.</p><div class="app-links"><button data-url="https://www.youtube.com">YouTube ↗</button><button data-url="https://mail.google.com">Gmail ↗</button><button data-url="https://www.google.com/maps">Maps ↗</button></div></div>
-          <div class="feature-card"><span>🔋</span><h3>Battery status</h3><p id="batteryStatus">Battery information is not available in this browser.</p><button class="outline-btn" id="batteryBtn">Check battery</button></div>
-          <div class="feature-card"><span>🔦</span><h3>Flashlight</h3><p>Direct flashlight control is not supported by ordinary websites.</p><button class="outline-btn" id="flashInfo">How to control it</button></div>
-          <div class="feature-card"><span>🔔</span><h3>Notifications</h3><p>Web notifications require permission and only show notifications created by this site.</p><button class="outline-btn" id="notifyBtn">Enable web notifications</button></div>
-          <div class="feature-card"><span>⏰</span><h3>Reminder</h3><p>Create a reminder in your task list.</p><button class="outline-btn" id="reminderBtn">Add a reminder</button></div>
-          <div class="feature-card"><span>⚙</span><h3>Android companion</h3><p>A future Android app can provide approved device integrations.</p><span class="coming-soon">COMPANION APP REQUIRED</span></div>
+      <section class="interface" id="view-hologram">
+        <div class="view-head"><div><label>INTERFACE 03 / GLOBAL HOLOGRAM</label><h1>GLOBAL <em>HOLOGRAM</em></h1></div><div class="live-chip">● CORE VIDEO ACTIVE</div></div>
+        <div class="holo-grid">
+          <div class="panel earth-panel"><div class="panel-title">PLANETARY CORE <span>VIDEO LOOP</span></div><div class="earth-stage"><video id="coreVideo" autoplay muted loop playsinline><source src="assets/core-video.mp4" type="video/mp4"></video><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="crosshair">＋</div></div><div class="map-foot"><span>HOLOGRAPHIC VISUALISATION</span><span id="videoState">VIDEO READY</span></div></div>
+          <div class="holo-side"><div class="panel metric-panel"><div class="panel-title">GLOBAL SYSTEM DATA</div><div class="metric"><small>LOCAL TIME</small><b id="holoTime">--:--:--</b></div><div class="metric"><small>LOCAL DATE</small><b id="holoDate">---</b></div><div class="metric"><small>DEVICE BATTERY</small><b id="holoBattery">UNAVAILABLE</b></div><div class="metric"><small>GEO STATUS</small><b id="holoGeo">STANDBY</b></div></div><div class="panel waveform-panel"><div class="panel-title">SIGNAL ANALYSIS <span>SIMULATED</span></div><div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><p>VISUAL DATA STREAM // LOCAL DEMO</p></div></div>
         </div>
       </section>
-
-      <section class="page" id="settingsPage">
-        <div class="section-intro"><div><div class="eyebrow cyan">PREFERENCES</div><h2>Settings</h2><p>Personalise your JARVIS workspace.</p></div></div>
-        <div class="settings-card"><label for="userName">Your name</label><input id="userName" placeholder="Enter your name"><label for="language">Assistant language</label><select id="language"><option value="en">English</option><option value="bn">বাংলা (Bengali)</option><option value="both">বাংলা + English</option></select><button class="primary-btn" id="saveSettings">Save settings</button></div>
-        <div class="settings-card"><h3>Privacy & storage</h3><p>Your tasks, notes and preferences are saved in this browser's local storage. They are not automatically uploaded to a server.</p><button class="danger-btn" id="eraseData">Delete local data</button></div>
+      <section class="interface" id="view-tracking">
+        <div class="view-head"><div><label>INTERFACE 04 / PERSONAL LOCATION HISTORY</label><h1>LIVE <em>TRACKING</em></h1></div><div class="live-chip">● USER CONTROLLED</div></div>
+        <div class="tracking-actions panel"><div><b>PERSONAL LOCATION TIMELINE</b><p>Tracking only runs after you press Start and grant browser permission. This prototype records locally while this page is open.</p></div><button id="trackStart" class="action-btn">START TRACKING</button><button id="trackStop" class="action-btn danger">STOP</button></div>
+        <div class="tracking-grid"><div class="panel"><div class="panel-title">CURRENT POSITION</div><div id="trackingMap" class="map track-map"></div><div class="map-foot"><span id="trackingStatus">TRACKING OFF</span><span id="trackingCurrent">NO FIX</span></div></div><div class="panel history-panel"><div class="panel-title">VISIT HISTORY <button id="clearHistory" class="mini-link">CLEAR HISTORY</button></div><div id="historyList" class="history-list"><div class="empty-state">No location points saved yet.</div></div></div></div>
       </section>
-
-      <footer>JARVIS PERSONAL ASSISTANT <span>•</span> Prototype v1.0 <span>•</span> Your data stays in this browser</footer>
+      <section class="interface" id="view-settings">
+        <div class="view-head"><div><label>CONFIGURATION / OPERATOR PREFERENCES</label><h1>SYSTEM <em>SETTINGS</em></h1></div><div class="live-chip">● CONFIGURATION</div></div>
+        <div class="settings-layout">
+          <div class="panel settings-card"><div class="panel-title">INTERFACE CONTROL</div><label>Default interface<select id="defaultView"><option value="command">01 — Command Center</option><option value="radar">02 — Geolocation Radar</option><option value="hologram">03 — Global Hologram</option><option value="tracking">04 — Live Tracking</option></select></label><label>Accent colour<select id="accentColor"><option value="cyan">CYAN / BLUE</option><option value="green">RADAR GREEN</option><option value="red">ALERT RED</option><option value="amber">AMBER</option></select></label><label>Chat panel position<select id="chatPosition"><option value="right">RIGHT SIDE</option><option value="bottom">BOTTOM</option></select></label><label class="toggle-row">Show system animations<input type="checkbox" id="animations" checked></label><label class="toggle-row">Auto-start hologram video<input type="checkbox" id="autoVideo" checked></label></div>
+          <div class="panel settings-card"><div class="panel-title">SECURITY & PRIVACY</div><label>Demo lock password<input id="lockPassword" type="password" value="AK@111" autocomplete="new-password"></label><p class="warning-text">DEMO ONLY: This password is stored in browser settings and is not secure authentication. Do not use it to protect private or sensitive data.</p><label class="toggle-row">Show simulated biometric scan on lock screen<input type="checkbox" id="fakeBio" checked></label><label class="toggle-row">Allow UL command to bypass demo lock<input type="checkbox" id="allowUL" checked></label><label class="toggle-row">Enable location history (local only)<input type="checkbox" id="historyEnabled" checked></label><button id="saveSettings" class="action-btn">SAVE ALL SETTINGS</button></div>
+          <div class="panel settings-card"><div class="panel-title">OPERATOR TOOLS</div><label>Map starting place<input id="mapStart" placeholder="Kolkata, India"></label><label>Assistant language<select id="assistantLanguage"><option value="en">English</option><option value="bn">বাংলা</option><option value="both">বাংলা + English</option></select></label><button id="exportHistory" class="action-btn">EXPORT LOCATION HISTORY</button><button id="resetSettings" class="action-btn danger">RESET SETTINGS</button></div>
+        </div>
+      </section>
     </main>
+    <aside class="chat-dock" id="chatDock">
+      <div class="chat-head"><div><span class="chat-led"></span><b>JARVIS CHAT</b><small>COMMAND INPUT / RESPONSE OUTPUT</small></div><button id="chatClear" title="Clear chat">⌫</button></div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-entry response"><small>JARVIS // SYSTEM</small><pre> [BOOT] JARVIS V2 INITIALISED
+ [READY] Awaiting operator command.
+ [HELP] Type HELP to view commands.</pre></div>
+      </div>
+      <div class="chat-input-label">OPERATOR MESSAGE</div>
+      <textarea id="chatInput" rows="2" placeholder="Enter command or message..."></textarea>
+      <div class="chat-controls"><button id="voiceBtn" title="Voice input">MIC</button><button id="sendBtn">TRANSMIT ↗</button></div>
+      <div class="chat-hint">ENTER: SEND · ST: SETTINGS · L: LOCK · UL: UNLOCK</div>
+    </aside>
   </div>
-  <div class="toast" id="toast" role="status"></div>
-  <script src="app.js"></script>
-</body>
-</html>
+</div>
+<div id="lockScreen" class="lock-screen hidden">
+  <div class="lock-card"><div class="lock-emblem">J</div><div class="eyebrow">JARVIS SECURITY GATE</div><h2>SESSION <em>LOCKED</em></h2><p class="lock-sub">OPERATOR AUTHENTICATION REQUIRED</p>
+    <div id="bioArea" class="bio-area"><div class="fingerprint" id="fingerprint">◎</div><div id="bioText">SIMULATED BIOMETRIC SCAN</div><button id="scanBio" class="action-btn">START DEMO SCAN</button><small>Visual-only animation. No fingerprint or face is actually scanned.</small></div>
+    <form id="unlockForm"><label for="unlockPassword">PASSWORD</label><input id="unlockPassword" type="password" placeholder="Enter access password" autocomplete="off"><button class="action-btn" type="submit">AUTHENTICATE</button></form>
+    <div class="lock-command"><span>COMMAND OVERRIDE</span><input id="lockCommand" placeholder="Type UL to unlock"><button id="lockCommandBtn">SEND</button></div>
+    <div id="lockMessage" class="lock-message">LOCK ACTIVE // ACCESS RESTRICTED</div>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/app.js"></script><script src="js/maps.js"></script><script src="js/location.js"></script><script src="js/chat.js"></script><script src="js/settings.js"></script>
+</body></html>
