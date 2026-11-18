@@ -95,5 +95,196 @@ body.accent-green{--accent:#63ff9c;--line:#286d4b;--glow:#4cff8d44}body.accent-r
 </div>
 <div id="toast" class="toast"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="js/app.js"></script><script src="js/maps.js"></script><script src="js/location.js"></script><script src="js/chat.js"></script><script src="js/settings.js"></script>
+
+
+<script>
+/* INLINE MODULE: app.js */
+/* JARVIS application bootstrap */
+window.JARVIS = {};
+const J = window.JARVIS;
+J.$ = selector => document.querySelector(selector);
+J.store = {
+  get(key, fallback) { try { return JSON.parse(localStorage.getItem('jv_' + key)) ?? fallback; } catch (_) { return fallback; } },
+  set(key, value) { try { localStorage.setItem('jv_' + key, JSON.stringify(value)); } catch (_) { J.toast?.('BROWSER STORAGE IS FULL OR DISABLED'); } }
+};
+J.defaults = { defaultView:'command', accentColor:'cyan', chatPosition:'right', animations:true, autoVideo:true, lockPassword:'AK@111', fakeBio:true, allowUL:true, historyEnabled:true, mapStart:'Kolkata, India', assistantLanguage:'both' };
+J.settings = { ...J.defaults, ...J.store.get('settings', {}) };
+J.toast = message => {
+  const el = J.$('#toast'); if (!el) return;
+  el.textContent = message; el.classList.add('show'); clearTimeout(J.toastTimer);
+  J.toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+};
+J.log = message => {
+  const box = J.$('#terminalLog'); if (!box) return;
+  const row = document.createElement('div'); row.textContent = '[' + new Date().toLocaleTimeString() + '] ' + message;
+  box.append(row); box.scrollTop = box.scrollHeight;
+};
+J.setAccent = color => {
+  document.body.classList.remove('accent-green','accent-red','accent-amber');
+  if (color !== 'cyan') document.body.classList.add('accent-' + color);
+  J.settings.accentColor = color; J.store.set('settings', J.settings);
+  return `[THEME] ${color.toUpperCase()} INTERFACE ENABLED.`;
+};
+J.switchView = name => {
+  if (!['command','radar','hologram','tracking','settings'].includes(name)) return;
+  document.querySelectorAll('.interface').forEach(el => el.classList.remove('active'));
+  const target = J.$('#view-' + name); if (!target) { J.log('VIEW NOT FOUND: ' + name); return; }
+  target.classList.add('active'); J.currentView = name;
+  if (name === 'hologram' && J.settings.autoVideo) { const video = J.$('#coreVideo'); if (video) video.play().catch(() => { if (J.$('#videoState')) J.$('#videoState').textContent = 'TAP TO PLAY VIDEO'; }); }
+  J.log('INTERFACE ' + name.toUpperCase() + ' LOADED');
+};
+J.lock = () => {
+  const screen = J.$('#lockScreen'); if (!screen) return;
+  screen.classList.remove('hidden'); J.$('#unlockPassword').value = '';
+  J.$('#lockMessage').textContent = 'LOCK ACTIVE // ACCESS RESTRICTED'; J.$('#lockCommand').value = '';
+  J.log('SESSION LOCKED — DEMO UI');
+};
+J.unlock = () => { J.$('#lockScreen')?.classList.add('hidden'); J.toast('ACCESS GRANTED'); J.log('SESSION UNLOCKED — DEMO UI'); };
+J.handleUnlockCommand = value => {
+  if (String(value).trim().toUpperCase() === 'UL' && J.settings.allowUL) { J.log('UL DEMO OVERRIDE ACCEPTED'); J.unlock(); }
+  else if (J.$('#lockMessage')) J.$('#lockMessage').textContent = 'INVALID COMMAND OR UL OVERRIDE DISABLED';
+};
+
+J.$('#lockBtn')?.addEventListener('click', J.lock);
+J.$('#settingsBtn')?.addEventListener('click', () => J.switchView('settings'));
+J.$('#homeBtn')?.addEventListener('click', () => J.switchView(J.settings.defaultView));
+J.$('#unlockForm')?.addEventListener('submit', event => {
+  event.preventDefault();
+  if (J.$('#unlockPassword').value === J.settings.lockPassword) J.unlock();
+  else J.$('#lockMessage').textContent = 'ACCESS DENIED // PASSWORD INCORRECT';
+});
+J.$('#lockCommandBtn')?.addEventListener('click', () => J.handleUnlockCommand(J.$('#lockCommand').value));
+J.$('#lockCommand')?.addEventListener('keydown', event => { if (event.key === 'Enter') J.handleUnlockCommand(event.target.value); });
+J.$('#scanBio')?.addEventListener('click', () => {
+  if (!J.settings.fakeBio) { J.$('#bioText').textContent = 'SIMULATED BIOMETRICS DISABLED'; return; }
+  const finger = J.$('#fingerprint'), label = J.$('#bioText'); finger.classList.add('scanning');
+  label.textContent = 'SCANNING... VISUAL DEMO'; J.$('#lockMessage').textContent = 'VISUAL DEMO ONLY — ENTER PASSWORD';
+  setTimeout(() => { finger.classList.remove('scanning'); label.textContent = 'DEMO SCAN COMPLETE — NOT VERIFIED'; }, 1800);
+});
+J.$('#chatClear')?.addEventListener('click', () => {
+  J.$('#chatMessages').innerHTML = ''; localStorage.removeItem('jv_chat_history');
+  J.addChat?.('response', '[SYSTEM] CHAT BUFFER CLEARED. TYPE HELP FOR COMMANDS.');
+});
+J.$('#voiceBtn')?.addEventListener('click', () => {
+  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!Recognition) { J.toast('VOICE INPUT IS NOT SUPPORTED IN THIS BROWSER'); return; }
+  const recognizer = new Recognition(); recognizer.lang = J.settings.assistantLanguage === 'bn' ? 'bn-IN' : 'en-IN';
+  recognizer.onresult = event => { J.$('#chatInput').value = event.results[0][0].transcript; J.sendChat(); };
+  recognizer.onerror = () => J.toast('VOICE RECOGNITION FAILED'); recognizer.start(); J.toast('LISTENING...');
+});
+J.$('#chatInput')?.addEventListener('keydown', event => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); J.sendChat(); } });
+J.$('#sendBtn')?.addEventListener('click', () => J.sendChat());
+
+const updateClock = () => {
+  const now = new Date();
+  if (J.$('#clock')) J.$('#clock').textContent = now.toLocaleTimeString();
+  if (J.$('#holoTime')) J.$('#holoTime').textContent = now.toLocaleTimeString();
+  if (J.$('#holoDate')) J.$('#holoDate').textContent = now.toLocaleDateString();
+};
+updateClock(); setInterval(updateClock, 1000);
+if (navigator.getBattery) navigator.getBattery().then(battery => {
+  J.deviceBattery = battery;
+  const update = () => { const value = Math.round(battery.level * 100) + '%' + (battery.charging ? ' / CHARGING' : ''); if (J.$('#batteryStat')) J.$('#batteryStat').textContent = value; if (J.$('#holoBattery')) J.$('#holoBattery').textContent = value; };
+  update(); battery.addEventListener('levelchange', update); battery.addEventListener('chargingchange', update);
+}).catch(() => {});
+window.addEventListener('error', event => J.log('RUNTIME ERROR: ' + (event.message || 'unknown')));
+J.switchView(J.settings.defaultView);
+J.log('ALL CORE MODULES INITIALISED');
+
+</script>
+<script>
+/* INLINE MODULE: maps.js */
+const J=window.JARVIS;
+J.maps={};
+function createMap(id,center=[22.5726,88.3639],zoom=12){if(!window.L)return null;let map=L.map(id,{zoomControl:true}).setView(center,zoom);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);return map}
+J.maps.command=createMap('commandMap');J.maps.radar=createMap('radarMap',[22.5726,88.3639],11);J.maps.tracking=createMap('trackingMap',[22.5726,88.3639],12);
+J.maps.markers={};
+J.maps.setMarker=(which,lat,lon,label='YOUR POSITION')=>{let m=J.maps[which];if(!m)return;m.setView([lat,lon],15);if(J.maps.markers[which])J.maps.markers[which].remove();J.maps.markers[which]=L.marker([lat,lon]).addTo(m).bindPopup(label).openPopup()};
+J.maps.search=async(q)=>{if(!q.trim())return;try{let r=await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(q));let a=await r.json();if(!a.length){J.toast('PLACE NOT FOUND');return}let p=a[0];J.maps.radar.setView([+p.lat,+p.lon],14);if(J.maps.markers.radar)J.maps.markers.radar.remove();J.maps.markers.radar=L.marker([+p.lat,+p.lon]).addTo(J.maps.radar).bindPopup(p.display_name).openPopup();J.$('#radarCoords').textContent=`MAP CENTER: ${(+p.lat).toFixed(4)}, ${(+p.lon).toFixed(4)}`;J.toast('MAP LOCATION FOUND')}catch{J.toast('MAP SEARCH FAILED — CHECK INTERNET')}};
+J.$('#mapSearchBtn').onclick=()=>J.maps.search(J.$('#mapSearch').value);
+J.$('#mapSearch').addEventListener('keydown',e=>{if(e.key==='Enter')J.maps.search(e.target.value)});
+J.maps.invalidate=()=>setTimeout(()=>Object.values(J.maps).forEach(x=>{if(x&&x.invalidateSize)x.invalidateSize()}),150);
+const observer=new MutationObserver(()=>J.maps.invalidate());document.querySelectorAll('.interface').forEach(el=>observer.observe(el,{attributes:true,attributeFilter:['class']}));
+
+</script>
+<script>
+/* INLINE MODULE: location.js */
+const J=window.JARVIS;
+J.location={watchId:null,history:J.store.get('locationHistory',[])};
+function fmtCoord(n){return Number(n).toFixed(5)}
+J.location.show=(pos)=>{let {latitude:lat,longitude:lon,accuracy}=pos.coords;let text=`${fmtCoord(lat)}° N, ${fmtCoord(lon)}° E`;J.$('#coords').textContent='COORDINATES: '+text+' / ±'+Math.round(accuracy)+'M';J.$('#locStatus').textContent='POSITION ACQUIRED';J.$('#holoGeo').textContent='POSITION ACQUIRED';J.maps.setMarker('command',lat,lon,'YOUR CURRENT POSITION');J.$('#trackingCurrent').textContent=text;J.maps.setMarker('tracking',lat,lon,'TRACKING POINT');if(J.settings.historyEnabled&&J.location.watchId!==null){let item={lat,lon,time:new Date().toISOString(),accuracy:Math.round(accuracy)};let last=J.location.history[J.location.history.length-1];if(!last||Math.abs(last.lat-lat)+Math.abs(last.lon-lon)>.0003){J.location.history.push(item);J.store.set('locationHistory',J.location.history);J.location.render()}}};
+J.location.error=(e)=>{J.$('#locStatus').textContent='LOCATION UNAVAILABLE';J.$('#trackingStatus').textContent='LOCATION ERROR: '+e.message;J.toast('LOCATION ERROR: '+e.message)};
+J.location.locate=()=>{if(!navigator.geolocation){J.toast('GEOLOCATION NOT SUPPORTED');return}J.$('#locStatus').textContent='REQUESTING PERMISSION';navigator.geolocation.getCurrentPosition(J.location.show,J.location.error,{enableHighAccuracy:true,timeout:15000})};
+J.$('#locateBtn').onclick=J.location.locate;J.$('#mapMyLocation').onclick=J.location.locate;
+J.$('#trackStart').onclick=()=>{if(!navigator.geolocation){J.toast('GEOLOCATION NOT SUPPORTED');return}if(!J.settings.historyEnabled){J.toast('ENABLE LOCATION HISTORY IN SETTINGS FIRST');return}if(J.location.watchId!==null)return;J.$('#trackingStatus').textContent='REQUESTING PERMISSION';J.location.watchId=navigator.geolocation.watchPosition(J.location.show,J.location.error,{enableHighAccuracy:true,maximumAge:5000,timeout:20000});J.$('#trackingStatus').textContent='TRACKING ACTIVE — WHILE PAGE IS OPEN';J.toast('LOCATION TRACKING STARTED')};
+J.$('#trackStop').onclick=()=>{if(J.location.watchId!==null)navigator.geolocation.clearWatch(J.location.watchId);J.location.watchId=null;J.$('#trackingStatus').textContent='TRACKING OFF';J.toast('LOCATION TRACKING STOPPED')};
+J.location.render=()=>{let box=J.$('#historyList');box.innerHTML='';if(!J.location.history.length){box.innerHTML='<div class="empty-state">No location points saved yet.</div>';return}J.location.history.slice().reverse().forEach(x=>{let row=document.createElement('div');row.className='history-item';let d=new Date(x.time);row.innerHTML=`<b>${d.toLocaleDateString()} ${d.toLocaleTimeString()}</b><br>${fmtCoord(x.lat)}, ${fmtCoord(x.lon)}<br>Accuracy: ±${x.accuracy}m`;box.append(row)})};
+J.$('#clearHistory').onclick=()=>{if(confirm('Delete all locally saved location history?')){J.location.history=[];J.store.set('locationHistory',[]);J.location.render();J.toast('HISTORY CLEARED')}};
+J.$('#exportHistory').onclick=()=>{let blob=new Blob([JSON.stringify(J.location.history,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='jarvis-location-history.json';a.click();URL.revokeObjectURL(a.href)};
+J.location.render();
+
+</script>
+<script>
+/* INLINE MODULE: chat.js */
+/* JARVIS CHAT CORE — resilient local command assistant */
+(function(){
+ const J=window.JARVIS;
+ const $=s=>document.querySelector(s);
+ J.addChat=function(type,message){
+   const box=$('#chatMessages'); if(!box)return;
+   const entry=document.createElement('article'); entry.className='chat-entry '+(type==='user'?'user':'response');
+   const label=document.createElement('small'); label.textContent=type==='user'?'OPERATOR // INPUT':'JARVIS // RESPONSE';
+   const pre=document.createElement('pre'); pre.textContent=String(message); entry.append(label,pre); box.append(entry); box.scrollTop=box.scrollHeight;
+   try{const h=JSON.parse(localStorage.getItem('jv_chat_history')||'[]');h.push({type,text:String(message),at:Date.now()});localStorage.setItem('jv_chat_history',JSON.stringify(h.slice(-60)));}catch(e){}
+ };
+ J.respond=function(raw){
+   const t=String(raw||'').trim(); if(!t)return '';
+   let u=t.toUpperCase().replace(/\s+/g,' ').replace(/\s+SEND$/,'').trim();
+   if(u==='ST'||u==='SETTINGS'||u==='OPEN SETTINGS'){J.switchView('settings');return '[SYSTEM] SETTINGS PANEL OPENED.';}
+   if(u==='L'||u==='LOCK'){J.lock();return '[SECURITY] DEMO LOCK ACTIVATED.';}
+   if(u==='UL'||u==='UNLOCK'){if(J.settings.allowUL){J.unlock();return '[SECURITY] DEMO UNLOCK ACCEPTED.';}return '[ACCESS DENIED] UL COMMAND DISABLED IN SETTINGS.';}
+   const views={'1':'command','HOME':'command','COMMAND':'command','2':'radar','RADAR':'radar','MAP':'radar','3':'hologram','HOLO':'hologram','HOLOGRAM':'hologram','4':'tracking','TRACK':'tracking','TRACKING':'tracking'};
+   if(views[u]){J.switchView(views[u]);return '[INTERFACE] '+views[u].toUpperCase()+' MODULE ACTIVE.';}
+   if(['R','RED'].includes(u))return J.setAccent('red');
+   if(['B','BLUE','CYAN'].includes(u))return J.setAccent('cyan');
+   if(['G','GREEN'].includes(u))return J.setAccent('green');
+   if(['A','AMBER'].includes(u))return J.setAccent('amber');
+   if(u==='HELP'||u==='?')return '[COMMAND DIRECTORY]\n1 — COMMAND CENTER\n2 — GEO RADAR\n3 — EARTH HOLOGRAM\n4 — LOCATION HISTORY\nST — SETTINGS\nL — LOCK\nUL — DEMO UNLOCK\nR/B/G/A — THEMES\nMAP <PLACE> — SEARCH MAP\nTRACK ON / TRACK OFF — LOCATION TRACKING\nTIME / DATE / STATUS — SYSTEM INFO';
+   if(u==='STATUS')return '[SYSTEM STATUS]\nTIME: '+new Date().toLocaleString()+'\nVIEW: '+(J.currentView||'command').toUpperCase()+'\nAI: LOCAL DEMO MODE';
+   if(u==='TIME'||u==='WHAT TIME IS IT'||u==='সময়'||u==='সময়')return '[CLOCK] '+new Date().toLocaleTimeString();
+   if(u==='DATE'||u==='TODAY'||u==='তারিখ')return '[DATE] '+new Date().toLocaleDateString();
+   if(u.startsWith('MAP ')){const q=t.slice(4).replace(/\s+SEND$/i,'').trim();J.switchView('radar');if(J.maps&&J.maps.search)J.maps.search(q);return '[MAP ENGINE] SEARCH REQUEST: '+q;}
+   if(u==='TRACK ON'||u==='START TRACKING'){J.switchView('tracking');$('#trackStart')?.click();return '[LOCATION] TRACKING REQUESTED. ALLOW BROWSER LOCATION PERMISSION.';}
+   if(u==='TRACK OFF'||u==='STOP TRACKING'){$('#trackStop')?.click();return '[LOCATION] TRACKING STOP REQUESTED.';}
+   if(/^(HI|HELLO|HEY|হ্যালো|নমস্কার)(\\b|$)/i.test(t))return '[GREETING] HELLO, OPERATOR. JARVIS SYSTEM READY.';
+   if(/তোমার নাম|your name/i.test(t))return '[IDENTITY] I AM JARVIS, YOUR PERSONAL COMMAND INTERFACE.';
+   if(/সময়|সময়|time/i.test(t))return '[CLOCK] '+new Date().toLocaleTimeString();
+   if(/তারিখ|date/i.test(t))return '[DATE] '+new Date().toLocaleDateString();
+   if(/ধন্যবাদ|thank/i.test(t))return '[ACKNOWLEDGED] YOU ARE WELCOME, OPERATOR.';
+   return '[MESSAGE RECEIVED]\nLOCAL ASSISTANT: ONLINE\nADVANCED AI: NOT CONNECTED\n\nI can run JARVIS commands and answer basic built-in questions. A full conversational AI requires a separate AI service connection.';
+ };
+ J.sendChat=function(){
+   const input=$('#chatInput'),button=$('#sendBtn'); if(!input)return;
+   const message=input.value.trim(); if(!message){J.toast('TYPE A MESSAGE FIRST');input.focus();return;}
+   J.addChat('user',message); input.value='';
+   if(button){button.disabled=true;button.textContent='PROCESSING...';}
+   setTimeout(()=>{try{const answer=J.respond(message);if(answer)J.addChat('response',answer);}catch(err){J.addChat('response','[ERROR] '+(err&&err.message?err.message:'COMMAND FAILED'));console.error(err);}finally{if(button){button.disabled=false;button.textContent='TRANSMIT ↗';}input.focus();}},120);
+ };
+ const input=$('#chatInput'),button=$('#sendBtn');
+ if(input){input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();J.sendChat();}});}
+ if(button){button.addEventListener('click',e=>{e.preventDefault();J.sendChat();});}
+ $('#chatClear')?.addEventListener('click',()=>{const box=$('#chatMessages');if(box)box.innerHTML='';localStorage.removeItem('jv_chat_history');J.addChat('response','[SYSTEM] CHAT HISTORY CLEARED. TYPE HELP.');});
+ try{const h=JSON.parse(localStorage.getItem('jv_chat_history')||'[]');if(h.length){const box=$('#chatMessages');box.innerHTML='';h.slice(-30).forEach(x=>J.addChat(x.type,x.text));}}catch(e){}
+})();
+</script>
+<script>
+/* INLINE MODULE: settings.js */
+const J=window.JARVIS;
+function applySettings(){document.body.classList.remove('accent-green','accent-red','accent-amber','chat-bottom','no-animations');if(J.settings.accentColor!=='cyan')document.body.classList.add('accent-'+J.settings.accentColor);if(J.settings.chatPosition==='bottom')document.body.classList.add('chat-bottom');if(!J.settings.animations)document.body.classList.add('no-animations');J.$('#bioArea').style.display=J.settings.fakeBio?'grid':'none';}
+function loadSettings(){for(let k of ['defaultView','accentColor','chatPosition','animations','autoVideo','lockPassword','fakeBio','allowUL','historyEnabled','mapStart','assistantLanguage']){let el=J.$('#'+k);if(!el)continue;let v=J.settings[k];if(el.type==='checkbox')el.checked=!!v;else el.value=v??''}applySettings()}
+J.$('#saveSettings').onclick=()=>{for(let k of ['defaultView','accentColor','chatPosition','animations','autoVideo','lockPassword','fakeBio','allowUL','historyEnabled','mapStart','assistantLanguage']){let el=J.$('#'+k);J.settings[k]=el.type==='checkbox'?el.checked:el.value}if(!J.settings.lockPassword){J.toast('PASSWORD CANNOT BE EMPTY');return}J.store.set('settings',J.settings);applySettings();J.toast('ALL SETTINGS SAVED');J.log('OPERATOR SETTINGS UPDATED')};
+J.$('#resetSettings').onclick=()=>{if(confirm('Reset all JARVIS settings to defaults?')){J.settings={...J.defaults};J.store.set('settings',J.settings);loadSettings();J.toast('SETTINGS RESET')}};
+J.settings=J.settings||{...J.defaults};loadSettings();
+
+</script>
 </body></html>
