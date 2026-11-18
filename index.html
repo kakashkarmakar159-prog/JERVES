@@ -27,6 +27,39 @@ body.accent-green{--accent:#63ff9c;--line:#286d4b;--glow:#4cff8d44}body.accent-r
 @keyframes pulse-ring{0%,100%{box-shadow:0 0 0 30px #39efb70b,0 0 0 60px #39efb708,0 0 22px #39efb722}50%{box-shadow:0 0 0 42px #39efb712,0 0 0 82px #39efb70a,0 0 35px #39efb744}}
 @media(max-width:680px){.chat-dock{border-radius:6px}.chat-messages{min-height:180px}.earth-stage{height:320px}.panel{box-shadow:inset 0 0 18px #0d626015,0 8px 22px #0007}}
 
+
+/* JARVIS V4 — holographic command deck */
+:root{--bg:#02090e;--panel:#04141d;--panel2:#071e29;--line:#1b7782;--ink:#c0fff5;--muted:#69aeb2;--accent:#42f2d5;--glow:#28f0d855;--chatw:365px}
+body{background:radial-gradient(ellipse at 18% 12%,#07303a 0,transparent 36%),radial-gradient(ellipse at 85% 65%,#061e35 0,transparent 40%),#01070b}
+.topbar{height:76px;background:linear-gradient(90deg,#02090df5,#041922f2);border-bottom:1px solid #258a91;box-shadow:0 8px 32px #0009}
+.brand-logo{width:48px;height:48px;font-size:27px;border-width:2px;box-shadow:0 0 24px var(--glow),inset 0 0 14px #23d7d522}
+.brand b{font-size:18px;letter-spacing:4px}.brand small{letter-spacing:2px}
+.layout{gap:15px;padding:16px;max-width:2000px}.panel{border:1px solid #23717b;border-radius:10px;background:linear-gradient(145deg,#071c27ed,#020d15f5);box-shadow:inset 0 0 28px #1ad4d40c,0 12px 35px #0008,0 0 12px #16a7b00b}
+.panel-title{height:44px;padding:14px 16px;border-bottom:1px solid #1a5964;font-size:11px;letter-spacing:2px;color:#d1fff9}.panel-title span{font-size:9px;letter-spacing:1px}
+.view-head{padding:10px 5px 17px}.view-head h1{letter-spacing:3px;text-shadow:0 0 20px #39e7db33}.live-chip{border-radius:3px;background:#08232caa;box-shadow:inset 0 0 12px #35e6dc16}
+.command-grid{grid-template-columns:minmax(0,1.08fr) minmax(300px,.92fr);grid-template-rows:minmax(420px,62vh) minmax(165px,auto);gap:14px}
+.map-panel{border-radius:10px;isolation:isolate}.map{height:calc(100% - 83px);min-height:320px}.map-panel .map{filter:saturate(1.25)}
+.map-foot{min-height:39px;background:#03121ad9;font-size:10px;letter-spacing:.5px;padding:10px 14px}
+.map-foot button,.mini-link{border-radius:3px;padding:7px 10px;background:#082b35;color:#9ffdf1}
+.terminal-panel{min-height:420px;position:relative;background:linear-gradient(160deg,#03120e,#020a0a 70%);border-color:#2c9871}
+.terminal-panel:after{content:'ENCRYPTED DATA STREAM / LIVE LOCAL DEMO';position:absolute;bottom:47px;left:15px;font-size:8px;letter-spacing:1.6px;color:#4a9a79;pointer-events:none}
+.terminal-log{padding:19px 17px 45px;color:#b4f7c8;font-size:12px;line-height:1.9;background:repeating-linear-gradient(0deg,transparent 0 26px,#55d69b08 27px 28px)}
+.terminal-stats{background:#03100f;border-top:1px solid #236b58;padding:13px;font-size:10px}
+.data-panel{border-radius:10px}.diagnostic-lines{padding:16px 18px;font-size:11px;line-height:2.1;letter-spacing:.6px}.bars{height:48px;padding:0 18px 12px;gap:7px}.bars i{border-radius:2px;box-shadow:0 0 10px var(--glow)}
+.radar-sweep{width:min(58%,340px);height:auto;aspect-ratio:1;top:48%;left:50%;border:1px solid #55ffbc99;box-shadow:0 0 0 28px #39efb710,0 0 0 58px #39efb70b,0 0 0 90px #39efb706,0 0 45px #2bffb733}
+.radar-sweep:before{content:'';position:absolute;inset:13%;border:1px solid #4af5bb66;border-radius:50%;box-shadow:0 0 0 22px #4af5bb0c,0 0 0 44px #4af5bb0a}
+.radar-sweep:after{background:conic-gradient(from 0deg,transparent 0 72%,#36ffb966 100%);filter:blur(1px)}
+.chat-dock{border:1px solid #287d86;border-radius:10px;background:linear-gradient(160deg,#061b25f7,#020a11f7);box-shadow:0 0 35px #0009,0 0 18px #12c8d10c;overflow:hidden}
+.chat-head{min-height:68px;padding:17px;border-bottom:1px solid #205e69;background:#071b25}.chat-head b{font-size:13px;letter-spacing:2px}.chat-head small{font-size:9px;letter-spacing:1px}.chat-messages{padding:15px}.chat-entry{border-radius:5px;padding:13px;background:linear-gradient(110deg,#08212a,#061721);box-shadow:inset 0 0 15px #21d3d00a}.chat-entry.user{background:linear-gradient(110deg,#0a2236,#071622)}.chat-entry small{font-size:9px;letter-spacing:1.5px}.chat-entry pre{font-size:11px;line-height:1.8}.chat-input-label{font-size:9px;letter-spacing:1.4px;padding:10px 14px 6px}.chat-dock textarea{margin:0 13px;border-radius:4px;min-height:82px;font-size:12px;line-height:1.6}.chat-controls{padding:11px 13px}.chat-controls button{border-radius:4px;padding:13px;font-size:11px;letter-spacing:1px}.chat-controls #sendBtn{box-shadow:0 0 18px #12cbd12b;background:linear-gradient(90deg,#07515b,#0b3b4a)}.chat-hint{font-size:9px;padding:0 14px 14px;line-height:1.8}
+.settings-layout{gap:14px}.settings-card{border-radius:9px}.settings-card .panel-title{height:auto;min-height:44px}.settings-card>label:not(.toggle-row){font-size:10px;margin:17px}.settings-card input,.settings-card select{width:100%;border-radius:4px;padding:12px;font-size:11px}.toggle-row{font-size:10px;margin:16px 17px}.action-btn{border-radius:4px;cursor:pointer}.warning-text{color:#f2c879!important}
+.jarvis-map-pin{width:24px;height:24px;position:relative;border-radius:50%;background:#39f3c9;border:3px solid #e0fff7;box-shadow:0 0 12px #31ffd7,0 0 28px #31ffd799}
+.jarvis-map-pin:before,.jarvis-map-pin:after{content:'';position:absolute;inset:-10px;border:1px solid #4effc8;border-radius:50%;animation:pinpulse 2s ease-out infinite}
+.jarvis-map-pin:after{animation-delay:1s}.jarvis-map-pin span{position:absolute;inset:5px;border-radius:50%;background:#eafffb}
+@keyframes pinpulse{0%{transform:scale(.55);opacity:.9}100%{transform:scale(2.6);opacity:0}}
+.gemini-status{display:flex;align-items:center;gap:8px;margin:8px 17px 15px;font-size:10px;color:var(--muted)}.gemini-status:before{content:'';width:8px;height:8px;border-radius:50%;background:#e0ad4d;box-shadow:0 0 9px currentColor}.gemini-status.online:before{background:#40e8a5}.gemini-note{margin:0 17px 12px!important;font-size:9px!important;line-height:1.7!important;color:#e5bd77!important}.gemini-actions{display:flex;gap:8px;margin:8px 17px 16px}.gemini-actions button{flex:1}
+@media(max-width:950px){.command-grid{grid-template-columns:1fr 1fr;grid-template-rows:minmax(360px,55vh) auto}.data-panel{grid-column:1/-1}.chat-dock{min-height:560px}}
+@media(max-width:680px){.topbar{height:64px;padding:0 10px}.brand-logo{width:38px;height:38px}.brand b{font-size:14px}.layout{gap:10px;padding:9px}.command-grid{grid-template-columns:1fr;grid-template-rows:390px 300px auto;gap:10px}.map{min-height:280px}.terminal-panel{min-height:300px}.data-panel{grid-column:auto}.radar-sweep{width:62%;top:47%}.chat-dock{position:relative;top:auto;height:520px;min-height:520px;border-radius:9px}.chat-messages{min-height:180px}.chat-dock textarea{min-height:76px}.settings-layout{grid-template-columns:1fr}.panel-title{font-size:10px}.diagnostic-lines{font-size:9px}.bars{height:36px}}
+
 </style>
 </head>
 <body>
@@ -67,6 +100,13 @@ body.accent-green{--accent:#63ff9c;--line:#286d4b;--glow:#4cff8d44}body.accent-r
         <div class="settings-layout">
           <div class="panel settings-card"><div class="panel-title">INTERFACE CONTROL</div><label>Default interface<select id="defaultView"><option value="command">01 — Command Center</option><option value="radar">02 — Geolocation Radar</option><option value="hologram">03 — Global Hologram</option><option value="tracking">04 — Live Tracking</option></select></label><label>Accent colour<select id="accentColor"><option value="cyan">CYAN / BLUE</option><option value="green">RADAR GREEN</option><option value="red">ALERT RED</option><option value="amber">AMBER</option></select></label><label>Chat panel position<select id="chatPosition"><option value="right">RIGHT SIDE</option><option value="bottom">BOTTOM</option></select></label><label class="toggle-row">Show system animations<input type="checkbox" id="animations" checked></label><label class="toggle-row">Auto-start hologram video<input type="checkbox" id="autoVideo" checked></label></div>
           <div class="panel settings-card"><div class="panel-title">SECURITY & PRIVACY</div><label>Demo lock password<input id="lockPassword" type="password" value="AK@111" autocomplete="new-password"></label><p class="warning-text">DEMO ONLY: This password is stored in browser settings and is not secure authentication. Do not use it to protect private or sensitive data.</p><label class="toggle-row">Show simulated biometric scan on lock screen<input type="checkbox" id="fakeBio" checked></label><label class="toggle-row">Allow UL command to bypass demo lock<input type="checkbox" id="allowUL" checked></label><label class="toggle-row">Enable location history (local only)<input type="checkbox" id="historyEnabled" checked></label><button id="saveSettings" class="action-btn">SAVE ALL SETTINGS</button></div>
+          <div class="panel settings-card" id="geminiSettingsCard"><div class="panel-title">GEMINI AI CONNECTION <span>OPTIONAL API</span></div>
+            <label>Gemini API Key<input id="geminiApiKey" type="password" placeholder="Paste your Gemini API key" autocomplete="off"></label>
+            <label>Gemini Model<select id="geminiModel"><option value="gemini-3.8-flash">Gemini 3.8 Flash</option><option value="gemini-3.7-flash">Gemini 3.7 Flash</option></select></label>
+            <div class="gemini-status" id="geminiStatus">NOT CONNECTED — LOCAL ASSISTANT ACTIVE</div>
+            <p class="gemini-note">SECURITY: This browser-only demo keeps the key in session memory, not permanent storage. The key is still visible to anyone using browser developer tools. Do not publish a key in a public website. For a public GitHub Pages site, use a private backend proxy instead.</p>
+            <div class="gemini-actions"><button id="testGemini" class="action-btn" type="button">TEST CONNECTION</button><button id="clearGemini" class="action-btn danger" type="button">CLEAR KEY</button></div>
+          </div>
           <div class="panel settings-card"><div class="panel-title">OPERATOR TOOLS</div><label>Map starting place<input id="mapStart" placeholder="Kolkata, India"></label><label>Assistant language<select id="assistantLanguage"><option value="en">English</option><option value="bn">বাংলা</option><option value="both">বাংলা + English</option></select></label><button id="exportHistory" class="action-btn">EXPORT LOCATION HISTORY</button><button id="resetSettings" class="action-btn danger">RESET SETTINGS</button></div>
         </div>
       </section>
@@ -225,56 +265,15 @@ J.location.render();
 
 </script>
 <script>
-/* INLINE MODULE: chat.js */
-/* JARVIS CHAT CORE — resilient local command assistant */
+/* INLINE MODULE: chat.js — JARVIS V4 resilient chat + optional Gemini */
 (function(){
- const J=window.JARVIS;
- const $=s=>document.querySelector(s);
- J.addChat=function(type,message){
-   const box=$('#chatMessages'); if(!box)return;
-   const entry=document.createElement('article'); entry.className='chat-entry '+(type==='user'?'user':'response');
-   const label=document.createElement('small'); label.textContent=type==='user'?'OPERATOR // INPUT':'JARVIS // RESPONSE';
-   const pre=document.createElement('pre'); pre.textContent=String(message); entry.append(label,pre); box.append(entry); box.scrollTop=box.scrollHeight;
-   try{const h=JSON.parse(localStorage.getItem('jv_chat_history')||'[]');h.push({type,text:String(message),at:Date.now()});localStorage.setItem('jv_chat_history',JSON.stringify(h.slice(-60)));}catch(e){}
- };
- J.respond=function(raw){
-   const t=String(raw||'').trim(); if(!t)return '';
-   let u=t.toUpperCase().replace(/\s+/g,' ').replace(/\s+SEND$/,'').trim();
-   if(u==='ST'||u==='SETTINGS'||u==='OPEN SETTINGS'){J.switchView('settings');return '[SYSTEM] SETTINGS PANEL OPENED.';}
-   if(u==='L'||u==='LOCK'){J.lock();return '[SECURITY] DEMO LOCK ACTIVATED.';}
-   if(u==='UL'||u==='UNLOCK'){if(J.settings.allowUL){J.unlock();return '[SECURITY] DEMO UNLOCK ACCEPTED.';}return '[ACCESS DENIED] UL COMMAND DISABLED IN SETTINGS.';}
-   const views={'1':'command','HOME':'command','COMMAND':'command','2':'radar','RADAR':'radar','MAP':'radar','3':'hologram','HOLO':'hologram','HOLOGRAM':'hologram','4':'tracking','TRACK':'tracking','TRACKING':'tracking'};
-   if(views[u]){J.switchView(views[u]);return '[INTERFACE] '+views[u].toUpperCase()+' MODULE ACTIVE.';}
-   if(['R','RED'].includes(u))return J.setAccent('red');
-   if(['B','BLUE','CYAN'].includes(u))return J.setAccent('cyan');
-   if(['G','GREEN'].includes(u))return J.setAccent('green');
-   if(['A','AMBER'].includes(u))return J.setAccent('amber');
-   if(u==='HELP'||u==='?')return '[COMMAND DIRECTORY]\n1 — COMMAND CENTER\n2 — GEO RADAR\n3 — EARTH HOLOGRAM\n4 — LOCATION HISTORY\nST — SETTINGS\nL — LOCK\nUL — DEMO UNLOCK\nR/B/G/A — THEMES\nMAP <PLACE> — SEARCH MAP\nTRACK ON / TRACK OFF — LOCATION TRACKING\nTIME / DATE / STATUS — SYSTEM INFO';
-   if(u==='STATUS')return '[SYSTEM STATUS]\nTIME: '+new Date().toLocaleString()+'\nVIEW: '+(J.currentView||'command').toUpperCase()+'\nAI: LOCAL DEMO MODE';
-   if(u==='TIME'||u==='WHAT TIME IS IT'||u==='সময়'||u==='সময়')return '[CLOCK] '+new Date().toLocaleTimeString();
-   if(u==='DATE'||u==='TODAY'||u==='তারিখ')return '[DATE] '+new Date().toLocaleDateString();
-   if(u.startsWith('MAP ')){const q=t.slice(4).replace(/\s+SEND$/i,'').trim();J.switchView('radar');if(J.maps&&J.maps.search)J.maps.search(q);return '[MAP ENGINE] SEARCH REQUEST: '+q;}
-   if(u==='TRACK ON'||u==='START TRACKING'){J.switchView('tracking');$('#trackStart')?.click();return '[LOCATION] TRACKING REQUESTED. ALLOW BROWSER LOCATION PERMISSION.';}
-   if(u==='TRACK OFF'||u==='STOP TRACKING'){$('#trackStop')?.click();return '[LOCATION] TRACKING STOP REQUESTED.';}
-   if(/^(HI|HELLO|HEY|হ্যালো|নমস্কার)(\\b|$)/i.test(t))return '[GREETING] HELLO, OPERATOR. JARVIS SYSTEM READY.';
-   if(/তোমার নাম|your name/i.test(t))return '[IDENTITY] I AM JARVIS, YOUR PERSONAL COMMAND INTERFACE.';
-   if(/সময়|সময়|time/i.test(t))return '[CLOCK] '+new Date().toLocaleTimeString();
-   if(/তারিখ|date/i.test(t))return '[DATE] '+new Date().toLocaleDateString();
-   if(/ধন্যবাদ|thank/i.test(t))return '[ACKNOWLEDGED] YOU ARE WELCOME, OPERATOR.';
-   return '[MESSAGE RECEIVED]\nLOCAL ASSISTANT: ONLINE\nADVANCED AI: NOT CONNECTED\n\nI can run JARVIS commands and answer basic built-in questions. A full conversational AI requires a separate AI service connection.';
- };
- J.sendChat=function(){
-   const input=$('#chatInput'),button=$('#sendBtn'); if(!input)return;
-   const message=input.value.trim(); if(!message){J.toast('TYPE A MESSAGE FIRST');input.focus();return;}
-   J.addChat('user',message); input.value='';
-   if(button){button.disabled=true;button.textContent='PROCESSING...';}
-   setTimeout(()=>{try{const answer=J.respond(message);if(answer)J.addChat('response',answer);}catch(err){J.addChat('response','[ERROR] '+(err&&err.message?err.message:'COMMAND FAILED'));console.error(err);}finally{if(button){button.disabled=false;button.textContent='TRANSMIT ↗';}input.focus();}},120);
- };
- const input=$('#chatInput'),button=$('#sendBtn');
- if(input){input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();J.sendChat();}});}
- if(button){button.addEventListener('click',e=>{e.preventDefault();J.sendChat();});}
- $('#chatClear')?.addEventListener('click',()=>{const box=$('#chatMessages');if(box)box.innerHTML='';localStorage.removeItem('jv_chat_history');J.addChat('response','[SYSTEM] CHAT HISTORY CLEARED. TYPE HELP.');});
- try{const h=JSON.parse(localStorage.getItem('jv_chat_history')||'[]');if(h.length){const box=$('#chatMessages');box.innerHTML='';h.slice(-30).forEach(x=>J.addChat(x.type,x.text));}}catch(e){}
+ const J=window.JARVIS, $=s=>document.querySelector(s);
+ J.addChat=function(type,message){const box=$('#chatMessages');if(!box)return;const e=document.createElement('article');e.className='chat-entry '+(type==='user'?'user':'response');const l=document.createElement('small');l.textContent=type==='user'?'OPERATOR // INPUT':'JARVIS // RESPONSE';const p=document.createElement('pre');p.textContent=String(message);e.append(l,p);box.append(e);box.scrollTop=box.scrollHeight;try{const a=JSON.parse(localStorage.getItem('jv_chat_history')||'[]');a.push({type,text:String(message),at:Date.now()});localStorage.setItem('jv_chat_history',JSON.stringify(a.slice(-60)))}catch(_){}};
+ J.restoreChat=function(){try{const a=JSON.parse(localStorage.getItem('jv_chat_history')||'[]');if(!a.length)return;const b=$('#chatMessages');b.innerHTML='';a.slice(-30).forEach(x=>{const e=document.createElement('article');e.className='chat-entry '+(x.type==='user'?'user':'response');const l=document.createElement('small');l.textContent=x.type==='user'?'OPERATOR // INPUT':'JARVIS // RESPONSE';const p=document.createElement('pre');p.textContent=x.text;e.append(l,p);b.append(e)});b.scrollTop=b.scrollHeight}catch(_){}};
+ J.askGemini=async function(prompt){const key=sessionStorage.getItem('jv_gemini_key');if(!key)throw new Error('Gemini API key not configured. Open ST → Settings → Gemini AI Connection.');const model=sessionStorage.getItem('jv_gemini_model')||'gemini-3.8-flash';const hist=JSON.parse(localStorage.getItem('jv_chat_history')||'[]').filter(x=>x.type==='user'||x.type==='response').slice(-12);const contents=hist.map(x=>({role:x.type==='user'?'user':'model',parts:[{text:x.text}]}));if(!contents.length||contents[contents.length-1].role!=='user')contents.push({role:'user',parts:[{text:prompt}]});const url='https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(model)+':generateContent?key='+encodeURIComponent(key);const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({systemInstruction:{parts:[{text:'You are JARVIS, a helpful personal AI assistant. Reply clearly and naturally. Match the user language, including Bengali. Never claim to control phone apps or read notifications unless a real permissioned integration is available.'}]},contents,generationConfig:{temperature:.7,maxOutputTokens:1200}})});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.error?.message||('Gemini request failed: HTTP '+res.status));const text=data.candidates?.[0]?.content?.parts?.map(p=>p.text||'').join('').trim();if(!text)throw new Error('Gemini returned an empty response.');return text;};
+ J.respond=function(raw){const t=String(raw||'').trim(),u=t.toUpperCase().replace(/\s+/g,' ').replace(/\s+SEND$/,'').trim();if(!t)return '';if(['ST','SETTINGS','OPEN SETTINGS'].includes(u)){J.switchView('settings');return '[SYSTEM] SETTINGS PANEL OPENED.'}if(['L','LOCK'].includes(u)){J.lock();return '[SECURITY] DEMO LOCK ACTIVATED.'}if(['UL','UNLOCK'].includes(u)){if(J.settings.allowUL){J.unlock();return '[SECURITY] DEMO UNLOCK ACCEPTED.'}return '[ACCESS DENIED] UL COMMAND DISABLED.'}const v={'1':'command','HOME':'command','COMMAND':'command','2':'radar','RADAR':'radar','MAP':'radar','3':'hologram','HOLO':'hologram','HOLOGRAM':'hologram','4':'tracking','TRACK':'tracking','TRACKING':'tracking'};if(v[u]){J.switchView(v[u]);return '[INTERFACE] '+v[u].toUpperCase()+' MODULE ACTIVE.'}if(['R','RED'].includes(u))return J.setAccent('red');if(['B','BLUE','CYAN'].includes(u))return J.setAccent('cyan');if(['G','GREEN'].includes(u))return J.setAccent('green');if(['A','AMBER'].includes(u))return J.setAccent('amber');if(u==='HELP'||u==='?')return '[COMMAND DIRECTORY]\n1 COMMAND CENTER | 2 GEO RADAR | 3 EARTH HOLOGRAM | 4 LOCATION HISTORY\nST SETTINGS | L LOCK | UL DEMO UNLOCK | R/B/G/A THEMES\nMAP <PLACE> | TRACK ON | TRACK OFF | TIME | DATE | STATUS';if(u==='STATUS')return '[SYSTEM STATUS]\nTIME: '+new Date().toLocaleString()+'\nVIEW: '+(J.currentView||'command').toUpperCase()+'\nAI: '+(sessionStorage.getItem('jv_gemini_key')?'GEMINI CONNECTED':'LOCAL DEMO');if(u==='TIME'||u==='WHAT TIME IS IT'||u==='সময়'||u==='সময়')return '[CLOCK] '+new Date().toLocaleTimeString();if(u==='DATE'||u==='TODAY'||u==='তারিখ')return '[DATE] '+new Date().toLocaleDateString();if(u.startsWith('MAP ')){const q=t.slice(4).replace(/\s+SEND$/i,'').trim();J.switchView('radar');J.maps?.search?.(q);return '[MAP ENGINE] SEARCHING: '+q}if(u==='TRACK ON'||u==='START TRACKING'){J.switchView('tracking');$('#trackStart')?.click();return '[LOCATION] TRACKING REQUESTED. GRANT BROWSER PERMISSION.'}if(u==='TRACK OFF'||u==='STOP TRACKING'){$('#trackStop')?.click();return '[LOCATION] TRACKING STOPPED.'}if(/^(HI|HELLO|HEY|হ্যালো|নমস্কার)(\b|$)/i.test(t))return '[GREETING] HELLO, OPERATOR. JARVIS SYSTEM READY.';return null;};
+ J.sendChat=async function(){const input=$('#chatInput');if(!input)return;const msg=input.value.trim();if(!msg){J.toast('TYPE A MESSAGE OR COMMAND FIRST');input.focus();return}J.addChat('user',msg);input.value='';const btn=$('#sendBtn');if(btn){btn.disabled=true;btn.textContent='PROCESSING…'}try{const local=J.respond(msg);if(local!==null&&local!==undefined){J.addChat('response',local);return}if(sessionStorage.getItem('jv_gemini_key')){J.addChat('response','[GEMINI LINK] PROCESSING REQUEST…');const box=$('#chatMessages');const pending=box?.lastElementChild;try{const answer=await J.askGemini(msg);if(pending)pending.querySelector('pre').textContent=answer;else J.addChat('response',answer)}catch(err){if(pending)pending.querySelector('pre').textContent='[GEMINI ERROR] '+err.message;else J.addChat('response','[GEMINI ERROR] '+err.message)}}else{J.addChat('response','[LOCAL ASSISTANT] MESSAGE RECEIVED.\nTo get answers to general questions, open ST → Settings → Gemini AI Connection, add your API key, and test the connection.')}}catch(err){console.error(err);J.addChat('response','[SYSTEM ERROR] '+(err.message||'Unknown error'));J.log?.('CHAT ERROR: '+err.message)}finally{if(btn){btn.disabled=false;btn.textContent='TRANSMIT ↗'}input.focus()}};
+ J.restoreChat();
 })();
 </script>
 <script>
@@ -287,4 +286,21 @@ J.$('#resetSettings').onclick=()=>{if(confirm('Reset all JARVIS settings to defa
 J.settings=J.settings||{...J.defaults};loadSettings();
 
 </script>
+
+<script>
+/* JARVIS V4 add-ons: Gemini settings + live map radar marker */
+(()=>{
+ const $=s=>document.querySelector(s), J=window.JARVIS;
+ const key=$('#geminiApiKey'), model=$('#geminiModel'), status=$('#geminiStatus');
+ const setStatus=(txt,ok=false)=>{if(status){status.textContent=txt;status.classList.toggle('online',ok)}};
+ if(key){key.value='';model.value=sessionStorage.getItem('jv_gemini_model')||'gemini-3.8-flash';setStatus(sessionStorage.getItem('jv_gemini_key')?'GEMINI KEY ACTIVE FOR THIS TAB':'NOT CONNECTED — LOCAL ASSISTANT ACTIVE',!!sessionStorage.getItem('jv_gemini_key'));}
+ $('#testGemini')?.addEventListener('click',async()=>{const k=key?.value.trim()||sessionStorage.getItem('jv_gemini_key');if(!k){setStatus('API KEY REQUIRED');J.toast('PASTE YOUR GEMINI API KEY FIRST');return}sessionStorage.setItem('jv_gemini_key',k);sessionStorage.setItem('jv_gemini_model',model.value);setStatus('TESTING GEMINI CONNECTION…');try{const answer=await J.askGemini('Reply with exactly: JARVIS LINK ONLINE');setStatus('GEMINI CONNECTED — '+model.value.toUpperCase(),true);J.toast('GEMINI CONNECTION SUCCESSFUL');J.log('GEMINI API CONNECTION VERIFIED');}catch(e){setStatus('CONNECTION FAILED — CHECK KEY / MODEL');J.toast('GEMINI ERROR: '+e.message);J.log('GEMINI ERROR: '+e.message)}});
+ $('#clearGemini')?.addEventListener('click',()=>{sessionStorage.removeItem('jv_gemini_key');sessionStorage.removeItem('jv_gemini_model');if(key)key.value='';setStatus('GEMINI KEY CLEARED — LOCAL ASSISTANT ACTIVE');J.toast('GEMINI KEY CLEARED')});
+ // Use an animated target marker at the actual GPS coordinates, not a fixed radar overlay.
+ if(J.maps&&window.L){J.maps.setMarker=(which,lat,lon,label='YOUR POSITION')=>{const map=J.maps[which];if(!map)return;map.setView([lat,lon],16);if(J.maps.markers[which])J.maps.markers[which].remove();const icon=L.divIcon({className:'',html:'<div class="jarvis-map-pin"><span></span></div>',iconSize:[24,24],iconAnchor:[12,12]});J.maps.markers[which]=L.marker([lat,lon],{icon}).addTo(map).bindPopup(label);};}
+ // Keep the map radar hidden until a real position fix is received.
+ const radar=$('.radar-sweep');if(radar){radar.style.display='none';const observer=new MutationObserver(()=>{if($('#locStatus')?.textContent==='POSITION ACQUIRED')radar.style.display='block'});observer.observe($('#locStatus'),{childList:true,subtree:true,characterData:true});}
+})();
+</script>
+
 </body></html>
